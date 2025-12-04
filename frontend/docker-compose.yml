@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    image: frontend:1.0
+    ports:
+      - "3000:80"
+    depends_on:
+      - gateway
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+
+  gateway:
+    image: gateway:1.0
+    ports:
+      - "8080:8080"

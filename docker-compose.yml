@@ -1,0 +1,178 @@
+version: '3.8'
+
+services:
+  # PostgreSQL for Authentication Service
+  auth-db:
+    image: postgres:15
+    container_name: auth-db
+    environment:
+      POSTGRES_DB: authentication-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1233
+    volumes:
+      - auth_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # PostgreSQL for User Service
+  user-db:
+    image: postgres:15
+    container_name: user-db
+    environment:
+      POSTGRES_DB: user-service-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1233
+    volumes:
+      - user_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # PostgreSQL for Product Service
+  product-db:
+    image: postgres:15
+    container_name: product-db
+    environment:
+      POSTGRES_DB: product-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1233
+    volumes:
+      - product_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # Redis for User Service
+  redis:
+    image: redis:7
+    container_name: redis
+    command: ["redis-server", "--requirepass", "1233"]
+    volumes:
+      - redisdata:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "1233", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # Authentication Service
+  authentication:
+    build: ./authentication
+    container_name: authentication
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-db:5432/authentication-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1233
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      auth-db:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: on-failure
+
+  # User Service
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/user-service-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1233
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: 1233
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      user-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: on-failure
+
+  # Product Service
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://product-db:5432/product-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1233
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      product-db:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: on-failure
+
+  # Gateway
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      AUTHENTICATION_SERVICE_URL: http://authentication:8081
+      USER_SERVICE_URL: http://user-service:8083
+      PRODUCT_SERVICE_URL: http://product-service:8082
+    depends_on:
+      - authentication
+      - user-service
+      - product-service
+    networks:
+      - app-network
+    restart: on-failure
+
+  # Frontend
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - gateway
+    networks:
+      - app-network
+    restart: on-failure
+
+volumes:
+  auth_pgdata:
+  user_pgdata:
+  product_pgdata:
+  redisdata:
+
+networks:
+  app-network:
+    driver: bridge

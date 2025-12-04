@@ -1,0 +1,198 @@
+html, body, #root {
+  height: 100%;
+}
+
+/* Global brand text color */
+:root { --brand-text: #0b2e4e; }
+body {
+  color: var(--brand-text);
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: var(--brand-text);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+p, li, label, input, button, select, textarea, small {
+  font-weight: 400;
+}
+a { color: #2f7fc4; text-decoration: none; }
+a:hover { color: #296ead; text-decoration: none; }
+
+pre {
+  white-space: pre-wrap;
+}
+
+/* Light blue focus highlight for inputs/selects */
+
+/* Navbar/Footer brand colors (darker than button) */
+.bg-brand-nav { background-color: #0b2e4e !important; }
+.bg-brand-footer { background-color: #08253f !important; }
+
+/* Force table headers with white text */
+.table thead.bg-brand-nav,
+.table thead.bg-brand-nav tr {
+  background-color: #0b2e4e !important;
+}
+.table thead.bg-brand-nav th {
+  background-color: #0b2e4e !important;
+  color: #ffffff !important;
+}
+
+/* Lighter blue table header */
+.bg-brand-tablehead { background-color: #2f7fc4 !important; }
+.table thead.bg-brand-tablehead,
+.table thead.bg-brand-tablehead tr,
+.table thead.bg-brand-tablehead th {
+  background-color: #2f7fc4 !important;
+  color: #ffffff !important;
+}
+
+/* Subtle outline around tables */
+.table-custom {
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0;
+}
+/* External outline wrapper for reliable outer border */
+ .table-outline {
+  border: 1px solid #0b294218;
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 0;
+}
+.table-outline .table { margin-bottom: 0; }
+
+/* External border emphasis on header/footer edges */
+.table-custom thead th:first-child { border-left-color: #0b294218 !important; }
+.table-custom thead th:last-child { border-right-color: #0b294218 !important; }
+.table-custom tbody tr:last-child > * { border-bottom-color: #0b294218 !important; }
+/* Inner borders for table */
+.table-custom.table-bordered,
+.table-custom.table-bordered > :not(caption) > * > * {
+  border-color: #0b294218;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #87CEFA; /* light sky blue */
+  box-shadow: 0 0 0 0.2rem rgba(135, 206, 250, 0.35);
+}
+
+/* Branded light-blue button */
+.btn-brand {
+  background-color: #42acef;
+  border-color: #42acef;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 6px;
+}
+.btn-brand:hover,
+.btn-brand:active {
+  background-color: #75bdf7;
+  border-color: #75bdf7;
+  color: #ffffff;
+}
+.btn-brand:focus {
+  box-shadow: 0 0 0 0.2rem rgba(249, 253, 255, 0.35);
+}
+.btn-brand:disabled {
+  background-color: #bcdffb;
+  border-color: #bcdffb;
+  color: #6b7b8c;
+}
+
+/* Keep password input and eye button as a single unit on invalid */
+.input-group .form-control.is-invalid + .btn {
+  border-color: #dc3545; /* Bootstrap danger */
+}
+.input-group .btn.is-invalid {
+  border-color: #dc3545;
+}
+
+/* Eye button (password toggle): blue background, white icon */
+.input-group .btn-brand i { color: #ffffff; }
+.input-group .btn-brand:hover i { color: #ffffff; }
+
+/* Wider offcanvas for edit user */
+.offcanvas-wide { --bs-offcanvas-width: 720px; max-width: 95vw; }
+/* Dark theme for user modals (create/edit) */
+.offcanvas-user { background-color: #0b2e4e; background-image: url('/src/resources/images/modal-background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.offcanvas-user .offcanvas-header { background-color: #ffffff; }
+.offcanvas-user .offcanvas-body { background-color: transparent; color: #ffffff; }
+.offcanvas-user .offcanvas-body .form-label, 
+.offcanvas-user .offcanvas-body label { color: #ffffff; }
+.offcanvas-user .offcanvas-body .text-muted { color: rgba(255,255,255,0.75) !important; }
+/* Semi-transparent backdrop for form fields */
+.form-backdrop { background-color: rgba(255,255,255,0.10); border-radius: 12px; padding: 24px; backdrop-filter: blur(10px); }
+
+/* Enhanced page styling */
+.page-container { background: linear-gradient(135deg, #f8fbff 0%, #e6f4ff 100%); min-height: 100vh; padding: 20px 0; }
+.content-card { background: #ffffff; border-radius: 16px; box-shadow: 0 8px 32px rgba(11, 46, 78, 0.08); padding: 32px; margin-bottom: 24px; border: 1px solid rgba(47, 127, 196, 0.1); }
+.page-header { background: linear-gradient(135deg, #0b2e4e 0%, #2f7fc4 100%); color: #ffffff; border-radius: 16px; padding: 24px; margin-bottom: 32px; box-shadow: 0 8px 24px rgba(11, 46, 78, 0.15); }
+.page-header h1, .page-header h2, .page-header h3, .page-header h4 { color: #ffffff; margin-bottom: 8px; }
+.page-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 12px; }
+.section-divider { height: 2px; background: linear-gradient(90deg, transparent 0%, rgba(47, 127, 196, 0.3) 50%, transparent 100%); margin: 32px 0; border: none; }
+
+/* Default icon color for other buttons */
+.input-group .btn i { color: #ffffff; }
+.input-group .btn:hover i { color: #87CEFA; }
+
+/* Global button rounding smaller */
+.btn { border-radius: 6px; }
+
+/* Search/filter controls */
+.control-input { border-radius: 6px; }
+.searchbar .form-control { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: 0; }
+.searchbar .btn-brand { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.searchbar .form-control:focus { position: relative; z-index: 2; }
+
+/* Modern select styling (custom dropdown) */
+.select-pill { background-color: #ffffff; border: 1px solid rgba(0,0,0,0.12); color: #0b2e4e; border-radius: 999px; padding: 6px 14px; display: inline-flex; align-items: center; }
+.select-pill:hover { border-color: rgba(0,0,0,0.2); background-color: #ffffff; color: #0b2e4e; }
+.select-pill:focus, .select-pill:active, .select-pill.show { box-shadow: 0 0 0 0.2rem rgba(135,206,250,0.25); border-color: #87CEFA; }
+.select-pill.select-pill-sm { padding: 4px 10px; font-size: .875rem; }
+ .select-menu { border-radius: 10px; box-shadow: 0 10px 24px rgba(0,0,0,0.24); border: 1px solid rgba(255,255,255,0.12); overflow: hidden; background-color: #0b2e4e; }
+.select-menu .dropdown-item { color: #ffffff; }
+.select-menu .dropdown-item.active, .select-menu .dropdown-item:active { background-color: rgba(255,255,255,0.16); color: #ffffff; }
+.select-menu .dropdown-item:hover, .select-menu .dropdown-item:focus { background-color: rgba(255,255,255,0.10); color: #ffffff; }
+
+/* Dark blue dropdown menus */
+.dropdown-menu { background-color: #0b2e4e; color: #ffffff; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 10px 24px rgba(0,0,0,0.24); }
+.dropdown-item { color: #ffffff; }
+.dropdown-item:hover, .dropdown-item:focus { background-color: rgba(255,255,255,0.10); color: #ffffff; }
+.dropdown-item.active, .dropdown-item:active { background-color: rgba(255,255,255,0.16); color: #ffffff; }
+.dropdown-divider { border-color: rgba(255,255,255,0.12); }
+.dropdown-header, .dropdown-item-text { color: rgba(255,255,255,0.85); }
+.dropdown-menu .bi, .dropdown-menu svg { color: #ffffff; fill: #ffffff; }
+.filters-panel { background: #f7fbff; border: 1px solid rgba(0,0,0,0.12); border-radius: 6px; padding: 10px; width: 240px; margin-left: 10px; }
+
+/* Filters link styling */
+.filter-link { text-decoration: none !important; color: #2f7fc4; }
+.filter-link:hover { text-decoration: none; color: #296ead; }
+
+/* Links in tables */
+.link-blue { color: #2f7fc4; font-weight: 400; text-decoration: none; }
+.link-blue:hover { color: #296ead; text-decoration: none; }
+
+/* Pastel badges for company types */
+.badge-pastel-admin { background-color: #e6e6fa; color: #2f2f6f; }
+.badge-pastel-buyer { background-color: #e6fff2; color: #2f6f4a; }
+.badge-pastel-seller { background-color: #fff3e6; color: #6f4a2f; }
+
+/* Pastel badges for user roles */
+.badge-pastel-director { background-color: #eaf4ff; color: #2f4a6f; }
+.badge-pastel-operator { background-color: #fff7e6; color: #6f5a2f; }
+
+/* Light blue switch (availability) */
+.form-switch .form-check-input:checked {
+  background-color: #42acef;
+  border-color: #42acef;
+}
+.form-switch .form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(135, 206, 250, 0.35);
+}
